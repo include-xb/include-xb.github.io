@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ZN">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ElementFinder</title>
+
+	<link rel="stylesheet" href="../../css/public.css">
+	<link rel="stylesheet" href="../../css/finder.css">
+
+	<script>
+
+		var list = ['H', '1', '1', 'He', '4', '2', 'Li', '7', '3', 'Be', '9', '4', 'B', '11', '5',
+			'C', '12', '6', 'N', '14', '7', 'O', '16', '8', 'F', '19', '9', 'Ne', '20', '10',
+			'Na', '23', '11', 'Mg', '24', '12', 'Al', '27', '13', 'Si', '28', '14', 'P', '31', '15',
+			'S', '32', '16', 'Cl', '35.5', '17', 'Ar', '40', '18', 'K', '39', '19', 'Ca', '40', '20',
+			'Sc', '45', '21', 'Ti', '48', '22', 'V', '51', '23', 'Cr', '52', '24', 'Mn', '55', '25',
+			'Fe', '56', '26', 'Co', '59', '27', 'Ni', '59', '28', 'Cu', '64', '29', 'Zn', '65', '30',
+			'Ga', '70', '31', 'Ge', '73', '32', 'As', '75', '33', 'Se', '79', '34', 'Br', '80', '35',
+			'Kr', '84', '36', 'Rb', '85', '37', 'Sr', '88', '38', 'Y', '89', '39', 'Zr', '91', '40',
+			'Nb', '93', '41', 'Mo', '96', '42', 'Tc', '98', '43', 'Ru', '101', '44', 'Rh', '103', '45',
+			'Pd', '106', '46', 'Ag', '108', '47', 'Cd', '112', '48', 'In', '115', '49', 'Sn', '119', '50',
+			'Sb', '121', '51', 'Te', '128', '52', 'I', '127', '53', 'Xe', '131', '54', 'Cs', '133', '55',
+			'Ba', '137', '56', 'La', '140', '57', 'Ce', '140', '58', 'Pr', '140', '59', 'Nd', '144', '60',
+			'Pm', '145', '61', 'Sm', '150', '62', 'Eu', '152', '63', 'Gd', '157', '64', 'Tb', '159', '65',
+			'Dy', '162', '66', 'Ho', '165', '67', 'Er', '167', '68', 'Tm', '169', '69', 'Yb', '173', '70',
+			'Lu', '175', '71', 'Hf', '178', '72', 'Ta', '180', '73', 'W', '183', '74', 'Re', '186', '75',
+			'Os', '190', '76', 'Ir', '192', '77', 'Pt', '195', '78', 'Au', '197', '79', 'Hg', '200', '80',
+		];
+
+		function query(k) {
+			var i = document.getElementById("in");
+			var m = document.getElementById("mass");
+			var n = document.getElementById("number");
+			var isquery = false;
+			if (k == 'mass') {
+				for (j = 1; j < list.length; j += 3) {
+					if (m.value == list[j]) {
+						n.value = list[j + 1];
+						i.value = list[j - 1];
+						isquery = true;
+						break;
+					}
+				}
+
+				if (!isquery) {
+					n.value = "";
+					i.value = "";
+					document.getElementById("result").innerHTML = "No results found";
+				}
+				else {
+					document.getElementById("result").innerHTML = "";
+				}
+			}
+
+			if (k == 'number') {
+				for (j = 2; j < list.length; j += 3) {
+					if (n.value == list[j]) {
+						m.value = list[j - 1];
+						i.value = list[j - 2];
+						isquery = true;
+						break;
+					}
+				}
+
+				if (!isquery) {
+					m.value = "";
+					i.value = "";
+					document.getElementById("result").innerHTML = "No results found";
+				}
+				else {
+					document.getElementById("result").innerHTML = "";
+				}
+			}
+
+			if (k == 'name') {
+				for (j = 0; j < list.length; j += 3) {
+					if (i.value == list[j]) {
+						m.value = list[j + 1];
+						n.value = list[j + 2];
+						isquery = true;
+						break;
+					}
+				}
+
+				if (!isquery) {
+					m.value = "";
+					n.value = "";
+					document.getElementById("result").innerHTML = "No results found";
+				}
+				else {
+					document.getElementById("result").innerHTML = "";
+				}
+			}
+		}
+
+	</script>
+</head>
+
+<body>
+	<div id="lan">
+		<ul style="margin-top: 0px;">
+			<li><a href="../../index.html">Home</a></li>
+			<li><a href="../../Projects/ElementFinder/Element.html">ElementFinder</a></li>
+			<li><a href="../../About.html">About</a></li>
+		</ul>
+	</div>
+	<div id="over-main">
+		<div id="main">
+			<h3>Element symbol</h3>
+			<input type="text" id="in">
+			<button onclick="query('name')">Query</button>
+			<br><br>
+			<h3>Atomic number</h3>
+			<input type="text" id="number">
+			<button onclick="query('number')">Query</button>
+			<br><br>
+			<h3>Relative atomic mass</h3>
+			<input type="text" id="mass">
+			<button onclick="query('mass')">Query</button>
+			<br><br>
+			<div id="result">
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

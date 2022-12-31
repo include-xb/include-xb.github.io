@@ -1,0 +1,30 @@
+h3 {
+    color: rgb(57, 92, 124);
+    font-family: 'Segoe UI', Tahoma, Verdana;
+}
+
+p {
+    color: rgb(241, 149, 88);
+    font-family: 'Segoe UI', Tahoma, Verdana;
+    font-size: 20px;
+}
+
+input {
+    border-radius: 5px;
+    color: rgb(36, 22, 46);
+}
+
+button {
+    color: rgb(95, 0, 147);
+    border-radius: 5px;
+}
+
+#result {
+    height: 100px;
+    color: rgb(22, 22, 22);
+    font-family: 'Segoe UI', Tahoma;
+    text-align: center;
+    margin-left: 25px;
+    margin-right: 25px;
+    margin-bottom: 25px;
+}
