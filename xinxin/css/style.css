@@ -1,0 +1,277 @@
+/* ============================================
+   宝石爱心拼图 - 全局样式
+   移动端优先，同时适配PC端
+   ============================================ */
+
+/* --- Reset & Base --- */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+    background: #0a0a0f;
+    color: #fff;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: none;
+}
+
+/* --- App Container --- */
+#app {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    background: radial-gradient(ellipse at center, #1a0a1e 0%, #0a0a0f 70%);
+}
+
+/* --- Game Container --- */
+#game-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#canvas-2d {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* --- UI Overlay --- */
+#ui-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: clamp(12px, 3vw, 20px) clamp(16px, 4vw, 28px);
+    pointer-events: none;
+    z-index: 10;
+}
+
+@supports (padding-top: env(safe-area-inset-top)) {
+    #ui-overlay {
+        padding-top: calc(env(safe-area-inset-top) + clamp(12px, 3vw, 20px));
+    }
+}
+
+#level-indicator {
+    font-size: clamp(16px, 4vw, 22px);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #ffb8c6;
+    text-shadow: 0 0 20px rgba(255, 150, 180, 0.4);
+}
+
+#progress {
+    font-size: clamp(14px, 3.5vw, 18px);
+    font-weight: 500;
+    color: #c8a2c8;
+    text-shadow: 0 0 10px rgba(200, 160, 200, 0.3);
+}
+
+#reset-btn {
+    pointer-events: auto;
+    width: clamp(36px, 8vw, 44px);
+    height: clamp(36px, 8vw, 44px);
+    border-radius: 50%;
+    border: 1px solid rgba(255, 184, 198, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffb8c6;
+    font-size: clamp(18px, 4.5vw, 24px);
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+#reset-btn:active {
+    background: rgba(255, 184, 198, 0.2);
+    transform: scale(0.95);
+}
+
+/* --- Completion & Final Overlay --- */
+#completion-overlay,
+#final-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.8s ease;
+}
+
+#completion-overlay.hidden,
+#final-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.overlay-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(5, 3, 10, 0.78);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.overlay-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: clamp(20px, 5vw, 40px);
+    max-width: min(90vw, 500px);
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.final-content {
+    max-width: min(90vw, 560px);
+    max-height: 80vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.final-heart-icon {
+    font-size: clamp(48px, 12vw, 72px);
+    margin-bottom: clamp(12px, 3vw, 24px);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+#completion-title {
+    font-size: clamp(20px, 5vw, 28px);
+    font-weight: 700;
+    color: #ffb8c6;
+    margin-bottom: clamp(16px, 3vw, 24px);
+    text-shadow: 0 0 30px rgba(255, 150, 180, 0.5);
+    animation: shimmer 2s ease-in-out infinite;
+}
+
+#completion-text,
+#final-text {
+    font-size: clamp(15px, 3.8vw, 20px);
+    line-height: 1.8;
+    color: #e8d0e8;
+    white-space: pre-line;
+    text-shadow: 0 0 10px rgba(200, 160, 200, 0.2);
+}
+
+#final-text {
+    font-size: clamp(14px, 3.5vw, 18px);
+    line-height: 2;
+    text-align: left;
+    padding: clamp(12px, 3vw, 20px);
+}
+
+/* --- Gem Button --- */
+.gem-btn {
+    margin-top: clamp(20px, 4vw, 32px);
+    padding: clamp(10px, 2.5vw, 14px) clamp(28px, 6vw, 40px);
+    font-size: clamp(16px, 4vw, 20px);
+    font-weight: 600;
+    font-family: inherit;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #ff6b8a 0%, #c44d9e 50%, #8b45a7 100%);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 4px 24px rgba(255, 100, 140, 0.4);
+    transition: all 0.3s ease;
+    letter-spacing: 0.05em;
+    animation: fadeInUp 0.8s ease-out 0.5s both;
+}
+
+.gem-btn:active {
+    transform: scale(0.96);
+    box-shadow: 0 2px 12px rgba(255, 100, 140, 0.6);
+}
+
+.gem-btn.hidden {
+    display: none;
+}
+
+/* --- Flash Overlay --- */
+#flash-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.6);
+    z-index: 15;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+#flash-overlay.hidden {
+    opacity: 0;
+}
+
+/* --- Animations --- */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.65; }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%      { transform: scale(1.08); opacity: 0.7; }
+}
+
+/* --- PC 适配 --- */
+@media (min-width: 768px) {
+    #reset-btn:hover {
+        background: rgba(255, 184, 198, 0.15);
+        transform: scale(1.05);
+    }
+
+    .gem-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 32px rgba(255, 100, 140, 0.5);
+    }
+
+    .gem-btn:active {
+        transform: translateY(0);
+    }
+}
+
+/* --- 大屏优化 --- */
+@media (min-width: 1024px) {
+    #game-container {
+        max-width: 700px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}

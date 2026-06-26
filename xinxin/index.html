@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>💎 心心拼图</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 游戏画布 -->
+        <div id="game-container">
+            <canvas id="canvas-2d"></canvas>
+        </div>
+
+        <!-- 顶部UI -->
+        <div id="ui-overlay">
+            <div id="level-indicator">第一关</div>
+            <div id="progress">0 / 10</div>
+            <button id="reset-btn" title="重新开始">↺</button>
+        </div>
+
+        <!-- 过关提示覆盖层 -->
+        <div id="completion-overlay" class="hidden">
+            <div class="overlay-bg"></div>
+            <div class="overlay-content">
+                <div id="completion-title"></div>
+                <div id="completion-text"></div>
+                <button id="next-level-btn" class="hidden gem-btn">下一关 →</button>
+            </div>
+        </div>
+
+        <!-- 最终文字覆盖层 -->
+        <div id="final-overlay" class="hidden">
+            <div class="overlay-bg"></div>
+            <div class="overlay-content final-content">
+                <div class="final-heart-icon">💎</div>
+                <div id="final-text"></div>
+                <button id="restart-btn" class="gem-btn">重新开始 💎</button>
+            </div>
+        </div>
+
+        <!-- 闪烁效果层 -->
+        <div id="flash-overlay" class="hidden"></div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

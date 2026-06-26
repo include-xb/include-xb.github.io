@@ -1,0 +1,39 @@
+{
+  "levels": [
+    {
+      "id": 1,
+      "name": "第一关",
+      "triangleCount": 8,
+      "snapThreshold": 42,
+      "scatterRadius": 140
+    },
+    {
+      "id": 2,
+      "name": "第二关",
+      "triangleCount": 11,
+      "snapThreshold": 36,
+      "scatterRadius": 155
+    },
+    {
+      "id": 3,
+      "name": "第三关",
+      "triangleCount": 14,
+      "snapThreshold": 30,
+      "scatterRadius": 170
+    },
+    {
+      "id": 4,
+      "name": "第四关",
+      "triangleCount": 17,
+      "snapThreshold": 28,
+      "scatterRadius": 185
+    },
+    {
+      "id": 5,
+      "name": "第五关",
+      "triangleCount": 20,
+      "snapThreshold": 28,
+      "scatterRadius": 200
+    }
+  ]
+}
