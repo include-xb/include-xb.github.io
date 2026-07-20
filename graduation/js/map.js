@@ -10,7 +10,11 @@ const MapModule = (() => {
     '香港特别行政区', '澳门特别行政区',
   ];
 
-  const GEOJSON_BASE = 'https://geo.datav.aliyun.com/areas_v3/bound/';
+  // 本地模式直接连阿里云 CDN；生产模式通过 Vercel 代理绕过防盗链
+  const LOCAL_MODE = false;
+  const GEOJSON_BASE = LOCAL_MODE
+    ? 'https://geo.datav.aliyun.com/areas_v3/bound/'
+    : 'https://vercel-api-gamma-ruby.vercel.app/api/geojson/';
 
   let chart = null;
   let onShowStudent = null; // 点击同学姓名时的回调
