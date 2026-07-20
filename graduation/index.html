@@ -108,6 +108,24 @@
     </div>
   </div>
 
+  <!-- 导出 JSON 弹窗（复制给小白） -->
+  <div id="exportModal" class="modal-mask hidden">
+    <div class="modal modal-export">
+      <div class="modal-header">
+        <h2>📋 复制给小白</h2>
+        <button class="modal-close" data-close="exportModal">×</button>
+      </div>
+      <div class="modal-body">
+        <p class="export-hint">将下方 JSON 复制发送给小白，由小白添加到 data.json：</p>
+        <textarea id="exportJson" class="export-textarea" readonly rows="8"></textarea>
+        <div class="form-actions">
+          <button type="button" class="btn" data-close="exportModal">关闭</button>
+          <button id="copyBtn" class="btn btn-primary">📋 一键复制</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="toast" class="toast hidden"></div>
 
   <script src="libs/echarts.min.js"></script>

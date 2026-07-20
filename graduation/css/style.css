@@ -427,6 +427,33 @@ body {
   }
 }
 
+/* ===== 导出 JSON 弹窗 ===== */
+.export-hint {
+  font-size: 13px;
+  color: var(--text-light);
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.export-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: "Consolas", "Courier New", monospace;
+  line-height: 1.5;
+  resize: vertical;
+  background: #f7fafc;
+  color: var(--text);
+  outline: none;
+}
+
+.export-textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.12);
+}
+
 /* ===== 响应式 ===== */
 @media (max-width: 640px) {
   .header h1 {
