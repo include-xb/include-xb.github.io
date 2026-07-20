@@ -10,11 +10,9 @@ const MapModule = (() => {
     '香港特别行政区', '澳门特别行政区',
   ];
 
-  // 本地模式直接连阿里云 CDN；生产模式通过 Vercel 代理绕过防盗链
-  const LOCAL_MODE = false;
-  const GEOJSON_BASE = LOCAL_MODE
-    ? 'https://geo.datav.aliyun.com/areas_v3/bound/'
-    : 'https://vercel-api-gamma-ruby.vercel.app/api/geojson/';
+  // 省份 GeoJSON 从本地 maps/provinces/ 目录加载（已预下载）
+  const GEOJSON_BASE = 'maps/provinces/';
+  const GEOJSON_SUFFIX = '.json';
 
   let chart = null;
   let onShowStudent = null; // 点击同学姓名时的回调
@@ -211,7 +209,7 @@ const MapModule = (() => {
     const info = provinceIndex[provinceName];
     if (!info) throw new Error('未知省份:' + provinceName);
     if (!geoCache[info.adcode]) {
-      const resp = await fetch(GEOJSON_BASE + info.adcode + '_full.json');
+      const resp = await fetch(GEOJSON_BASE + info.adcode + GEOJSON_SUFFIX);
       if (!resp.ok) throw new Error('省级地图请求失败:HTTP ' + resp.status);
       geoCache[info.adcode] = await resp.json();
     }

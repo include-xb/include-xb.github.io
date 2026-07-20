@@ -219,6 +219,8 @@ const UI = (() => {
 
       if (result === 'server') {
         toast(isUpdate ? `已更新 ${saved.name} 的资料` : `已保存 ${saved.name} 的资料`);
+      } else if (result === 'download') {
+        toast('已触发下载 data.json,请用该文件替换 GitHub 仓库中原文件后提交', true);
       } else {
         toast('保存失败,请检查网络连接', true);
       }
