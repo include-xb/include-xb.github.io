@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>高中毕业去向统计图</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-left">
+      <h1>🎓 高中毕业去向统计图</h1>
+      <span id="totalCount" class="total-count"></span>
+    </div>
+    <div class="header-right">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="搜索姓名 / 大学 / 专业…" autocomplete="off">
+        <div id="searchResults" class="search-results hidden"></div>
+      </div>
+      <button id="addBtn" class="btn btn-primary">＋ 添加同学</button>
+    </div>
+  </header>
+
+  <main class="map-container">
+    <div id="mapToolbar" class="map-toolbar hidden">
+      <button id="backBtn" class="btn">← 返回全国地图</button>
+      <span id="provinceTitle" class="province-title"></span>
+    </div>
+    <div id="map"></div>
+    <div id="cityPopup" class="city-popup hidden"></div>
+    <div id="mapHint" class="map-hint">点击省份查看详情 · 滚轮缩放 · 拖拽平移</div>
+  </main>
+
+  <!-- 同学详情弹窗 -->
+  <div id="detailModal" class="modal-mask hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>同学资料</h2>
+        <button class="modal-close" data-close="detailModal">×</button>
+      </div>
+      <div class="modal-body">
+        <dl class="detail-list">
+          <div class="detail-item"><dt>姓名</dt><dd id="dName"></dd></div>
+          <div class="detail-item"><dt>录取大学</dt><dd id="dUniversity"></dd></div>
+          <div class="detail-item"><dt>录取专业</dt><dd id="dMajor"></dd></div>
+          <div class="detail-item"><dt>省市</dt><dd id="dRegion"></dd></div>
+          <div class="detail-item"><dt>微信号</dt><dd id="dWechat"></dd></div>
+          <div class="detail-item"><dt>QQ号</dt><dd id="dQq"></dd></div>
+          <div class="detail-item"><dt>电话号码</dt><dd id="dPhone"></dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <!-- 添加同学弹窗 -->
+  <div id="addModal" class="modal-mask hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>添加同学</h2>
+        <button class="modal-close" data-close="addModal">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="addForm" novalidate>
+          <label class="form-field">
+            <span>姓名 <em>*</em></span>
+            <input type="text" name="name" required maxlength="20">
+          </label>
+          <label class="form-field">
+            <span>录取大学 <em>*</em></span>
+            <input type="text" name="university" required maxlength="40">
+          </label>
+          <label class="form-field">
+            <span>录取专业 <em>*</em></span>
+            <input type="text" name="major" required maxlength="40">
+          </label>
+          <div class="form-row">
+            <label class="form-field">
+              <span>省份 <em>*</em></span>
+              <select name="province" required>
+                <option value="">请选择省份</option>
+              </select>
+            </label>
+            <label class="form-field">
+              <span>城市 <em>*</em></span>
+              <select name="city" required disabled>
+                <option value="">请先选择省份</option>
+              </select>
+            </label>
+          </div>
+          <label class="form-field">
+            <span>微信号</span>
+            <input type="text" name="wechat" maxlength="40">
+          </label>
+          <label class="form-field">
+            <span>QQ号</span>
+            <input type="text" name="qq" maxlength="15" inputmode="numeric">
+          </label>
+          <label class="form-field">
+            <span>电话号码</span>
+            <input type="text" name="phone" maxlength="20" inputmode="tel">
+          </label>
+          <div class="form-actions">
+            <button type="button" class="btn" data-close="addModal">取消</button>
+            <button type="submit" class="btn btn-primary">保存</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="libs/echarts.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
