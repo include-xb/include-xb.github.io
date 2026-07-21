@@ -48,6 +48,11 @@ const MapModule = (() => {
       scatterLabelColor: dark ? '#e2e8f0' : '#2d3748',
       scatterLabelBg:    dark ? 'rgba(45,55,72,0.92)' : 'rgba(255,255,255,0.88)',
       scatterLabelBorder: dark ? '#718096' : '#cbd5e0',
+      // 光点 & 飞线（青绿色系：轨迹比粒子略淡）
+      spotColor:         dark ? '#2dd4bf' : '#0d9488',
+      spotGlow:          dark ? 'rgba(45,212,191,0.55)' : 'rgba(13,148,136,0.5)',
+      flightLine:        dark ? '#5ee4d4' : '#0d9488',
+      flightEffect:      dark ? '#2dd4bf' : '#0ea5a5',
     };
   }
 
@@ -76,16 +81,22 @@ const MapModule = (() => {
     chart.on('click', (params) => {
       if (currentProvince === null && params.seriesType === 'map') {
         drillDown(params.name);
+      } else if (currentProvince === null && (params.seriesType === 'effectScatter' || params.seriesType === 'lines')) {
+        handleSpotClick(params.data);
       } else if (params.seriesType === 'scatter') {
         handlePinClick(params.data);
       }
     });
-    // 悬停大头针显示浮层,移出后延迟隐藏(留给鼠标移进浮层的时间)
+    // 悬停显示浮层：大头针 / 光点 / 飞线
     chart.on('mouseover', (params) => {
-      if (params.seriesType === 'scatter') showCityPopup(params.data);
+      if (params.seriesType === 'scatter' || params.seriesType === 'effectScatter' || params.seriesType === 'lines') {
+        showCityPopup(params.data);
+      }
     });
     chart.on('mouseout', (params) => {
-      if (params.seriesType === 'scatter') scheduleHidePopup();
+      if (params.seriesType === 'scatter' || params.seriesType === 'effectScatter' || params.seriesType === 'lines') {
+        scheduleHidePopup();
+      }
     });
     // 缩放 / 平移地图时,大头针像素位置已变化,直接收起浮层
     chart.on('georoam', hidePopup);
@@ -120,8 +131,16 @@ const MapModule = (() => {
       `</div>`;
     popup.classList.remove('hidden');
 
-    // 大头针经纬度 -> 像素坐标,浮层放在大头针右侧,靠近边缘时自动翻转
-    const px = chart.convertToPixel('geo', [data.value[0], data.value[1]]);
+    // 获取像素坐标：effectScatter/scatter 用 value，lines 用 coords 终点
+    let coord;
+    if (data.value && data.value.length >= 2) {
+      coord = [data.value[0], data.value[1]];
+    } else if (data.coords && data.coords.length >= 2) {
+      coord = data.coords[data.coords.length - 1];
+    } else {
+      return;
+    }
+    const px = chart.convertToPixel('geo', coord);
     const cw = chart.getWidth();
     const ch = chart.getHeight();
     const pw = popup.offsetWidth;
@@ -168,6 +187,8 @@ const MapModule = (() => {
       const resp = await fetch('maps/china.json');
       const geojson = await resp.json();
       echarts.registerMap('china', geojson);
+      // 预加载所有同学所在城市的坐标，供光点和飞线使用
+      await ensureAllNeededCities();
       renderChina();
     } catch (e) {
       console.error(e);
@@ -175,6 +196,69 @@ const MapModule = (() => {
     } finally {
       chart.hideLoading();
     }
+  }
+
+  /* ---------- 光点 / 飞线数据 ---------- */
+
+  /** 预加载所有同学所在省份的城市坐标（供光点和飞线使用） */
+  async function ensureAllNeededCities() {
+    await ensureProvinceIndex();
+    const provinces = [...new Set(DataStore.getAll().map((s) => s.province))];
+    await Promise.allSettled(provinces.map((p) => getCities(p)));
+  }
+
+  /** 按城市分组学生，返回 effectScatter 数据 */
+  function buildSpotData() {
+    const groups = {};
+    DataStore.getAll().forEach((s) => {
+      const key = s.province + ':' + s.city;
+      if (!groups[key]) groups[key] = { province: s.province, city: s.city, students: [] };
+      groups[key].students.push(s);
+    });
+
+    return Object.values(groups)
+      .map((g) => {
+        const cities = cityListCache[g.province] || [];
+        const cityInfo = cities.find((c) => c.name === g.city);
+        const center = cityInfo
+          ? cityInfo.center
+          : provinceIndex[g.province]
+            ? provinceIndex[g.province].center
+            : null;
+        if (!center) return null;
+        return {
+          name: g.city,
+          value: [...center, g.students.length],
+          students: g.students,
+        };
+      })
+      .filter(Boolean);
+  }
+
+  /** 返回飞线数据：从昆山出发到每个城市 */
+  function buildFlightData() {
+    const KUNSHAN = [121.01, 31.386];
+    const groups = {};
+    DataStore.getAll().forEach((s) => {
+      const key = s.province + ':' + s.city;
+      if (!groups[key]) groups[key] = { province: s.province, city: s.city, count: 0, students: [] };
+      groups[key].count++;
+      groups[key].students.push(s);
+    });
+
+    return Object.values(groups)
+      .map((g) => {
+        const cities = cityListCache[g.province] || [];
+        const cityInfo = cities.find((c) => c.name === g.city);
+        const endCoord = cityInfo
+          ? cityInfo.center
+          : provinceIndex[g.province]
+            ? provinceIndex[g.province].center
+            : null;
+        if (!endCoord) return null;
+        return { coords: [KUNSHAN, endCoord], name: g.city, count: g.count, students: g.students };
+      })
+      .filter(Boolean);
   }
 
   /* ---------- 全国视图 ---------- */
@@ -192,18 +276,18 @@ const MapModule = (() => {
     hidePopup();
     const c = chartColors();
     const counts = countByProvince();
-    const data = Object.keys(provinceIndex).map((name) => ({
+    const mapData = Object.keys(provinceIndex).map((name) => ({
       name,
       value: counts[name] || 0,
     }));
-    const max = Math.max(1, ...data.map((d) => d.value));
+    const max = Math.max(1, ...mapData.map((d) => d.value));
+
+    const spotData = buildSpotData();
+    const flightData = buildFlightData();
 
     chart.setOption(
       {
-        tooltip: {
-          trigger: 'item',
-          formatter: (p) => `${p.name}<br/>同学人数:${p.value || 0} 人`,
-        },
+        tooltip: { show: false },
         visualMap: {
           min: 0,
           max,
@@ -214,19 +298,70 @@ const MapModule = (() => {
           inRange: { color: ['#dcebf7', '#7db3dd', '#2b6cb0', '#123f6d'] },
           textStyle: { color: c.visualMapText },
         },
+        geo: {
+          map: 'china',
+          roam: true,
+          scaleLimit: { min: 0.8, max: 5 },
+          label: { show: true, fontSize: 10, color: c.labelColor },
+          emphasis: {
+            label: { color: c.emphasisLabel, fontWeight: 'bold' },
+          },
+          itemStyle: { areaColor: 'transparent', borderColor: 'transparent' },
+        },
         series: [
+          // 省份着色层（承载 visualMap + 点击下钻；标签由 geo 渲染）
           {
             type: 'map',
             map: 'china',
-            roam: true,
-            scaleLimit: { min: 0.8, max: 5 },
-            label: { show: true, fontSize: 10, color: c.labelColor },
+            geoIndex: 0,
+            roam: false,
+            label: { show: false },
             itemStyle: { borderColor: c.mapBorder, borderWidth: 0.6 },
             emphasis: {
               label: { color: c.emphasisLabel, fontWeight: 'bold' },
               itemStyle: { areaColor: c.emphasisArea },
             },
-            data,
+            data: mapData,
+            tooltip: {
+              trigger: 'item',
+              formatter: (p) => `${p.name}<br/>同学人数: ${p.value || 0} 人`,
+            },
+          },
+          // 城市光点
+          {
+            type: 'effectScatter',
+            coordinateSystem: 'geo',
+            geoIndex: 0,
+            data: spotData,
+            symbol: 'circle',
+            symbolSize: (val) => Math.min(5 + val[2] * 2, 14),
+            showEffectOn: 'render',
+            rippleEffect: { brushType: 'stroke', scale: 3, period: 4 },
+            itemStyle: {
+              color: c.spotColor,
+              shadowBlur: 8,
+              shadowColor: c.spotGlow,
+            },
+            zlevel: 1,
+            tooltip: { show: false },
+          },
+          // 飞线
+          {
+            type: 'lines',
+            coordinateSystem: 'geo',
+            geoIndex: 0,
+            data: flightData,
+            lineStyle: { color: c.flightLine, width: 1.2, curveness: 0.25, opacity: 0.7 },
+            effect: {
+              show: true,
+              period: 2,
+              trailLength: 0.95,
+              symbol: 'circle',
+              symbolSize: 3,
+              color: c.flightEffect,
+            },
+            zlevel: 1,
+            tooltip: { show: false },
           },
         ],
       },
@@ -366,6 +501,16 @@ const MapModule = (() => {
       },
       true
     );
+  }
+
+  /** 点击全国视图光点/飞线:单人弹出资料;多人展开浮层 */
+  function handleSpotClick(data) {
+    if (!data || !data.students) return;
+    if (data.students.length === 1 && onShowStudent) {
+      onShowStudent(data.students[0]);
+    } else {
+      showCityPopup(data);
+    }
   }
 
   /** 点击大头针:单人弹出资料;多人展开浮层(方便触屏) */

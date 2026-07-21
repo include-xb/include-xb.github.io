@@ -19,6 +19,7 @@
 .distance-chart {
   list-style: none;
   max-width: 900px;
+  margin: 0 auto;
 }
 
 .distance-row {

@@ -153,7 +153,7 @@ const DistancePage = (() => {
   function initTheme() {
     const saved = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    applyTheme(saved ? saved === 'dark' : prefersDark);
+    applyTheme(saved ? saved === 'dark' : true);
 
     document.getElementById('themeToggle').addEventListener('click', () => {
       const current = document.documentElement.dataset.theme;
@@ -161,7 +161,7 @@ const DistancePage = (() => {
     });
 
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-      if (!localStorage.getItem('theme')) applyTheme(e.matches);
+      if (!localStorage.getItem('theme')) applyTheme(true);
     });
   }
 

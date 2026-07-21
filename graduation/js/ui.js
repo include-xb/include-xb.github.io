@@ -22,7 +22,7 @@ const UI = (() => {
   function initTheme() {
     const saved = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const isDark = saved ? saved === 'dark' : prefersDark;
+    const isDark = saved ? saved === 'dark' : true;
     applyTheme(isDark);
 
     $('#themeToggle').addEventListener('click', () => {
@@ -33,7 +33,7 @@ const UI = (() => {
     // 监听系统主题变化（当用户未手动设置时跟随系统）
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
       if (!localStorage.getItem('theme')) {
-        applyTheme(e.matches);
+        applyTheme(true);
       }
     });
   }
