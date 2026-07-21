@@ -1,5 +1,6 @@
 {
-  "students": {
+  "students": [
+    {
       "id": 1,
       "name": "蒋致远",
       "university": "华南理工大学",
