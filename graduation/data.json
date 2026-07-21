@@ -307,6 +307,39 @@
       "wechat": "",
       "qq": "1092139351",
       "phone": ""
+    },
+    {
+      "id": 29,
+      "name": "陈思哲",
+      "university": "南京师范大学",
+      "major": "数学类",
+      "province": "江苏省",
+      "city": "南京市",
+      "wechat": "",
+      "qq": " 2115207491",
+      "phone": ""
+    },
+    {
+      "id": 30,
+      "name": "杜紫郡",
+      "university": "江苏科技大学",
+      "major": "能源与动力工程",
+      "province": "江苏省",
+      "city": "镇江市",
+      "wechat": "",
+      "qq": " 3234356174",
+      "phone": ""
+    },
+    {
+      "id": 31,
+      "name": "朱一凡",
+      "university": "南京林业大学",
+      "major": "生物工程",
+      "province": "江苏省",
+      "city": "南京市",
+      "wechat": "",
+      "qq": "3192876487",
+      "phone": ""
     }
   ]
 }
