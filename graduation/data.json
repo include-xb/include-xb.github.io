@@ -1,15 +1,14 @@
 {
-  "students": [
-    {
+  "students": {
       "id": 1,
       "name": "蒋致远",
       "university": "华南理工大学",
-      "major": "数据与大数据科学",
+      "major": "数据科学与大数据技术",
       "province": "广东省",
       "city": "广州市",
       "wechat": "",
       "qq": "3604466056",
-      "phone": ""
+      "phone": "14761416214"
     },
     {
       "id": 2,
