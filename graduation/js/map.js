@@ -30,6 +30,27 @@ const MapModule = (() => {
 
   let currentProvince = null; // null 表示全国视图
 
+  /* ---------- ECharts 主题颜色 ---------- */
+
+  function chartColors() {
+    const dark = document.documentElement.dataset.theme === 'dark';
+    return {
+      visualMapText:     dark ? '#a0aec0' : '#4a5568',
+      labelColor:        dark ? '#a0aec0' : '#4a5568',
+      emphasisLabel:     dark ? '#e2e8f0' : '#1a202c',
+      emphasisArea:      dark ? '#dd6b20' : '#f6ad55',
+      mapBorder:         dark ? '#2d3748' : '#ffffff',
+      geoArea:           dark ? '#2a3f52' : '#e3eef8',
+      geoBorder:         dark ? '#4a6a8a' : '#7db3dd',
+      geoEmphasisArea:   dark ? '#3a5570' : '#cfe3f4',
+      pinColor:          dark ? '#fc8181' : '#e53e3e',
+      pinShadow:         dark ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.3)',
+      scatterLabelColor: dark ? '#e2e8f0' : '#2d3748',
+      scatterLabelBg:    dark ? 'rgba(45,55,72,0.92)' : 'rgba(255,255,255,0.88)',
+      scatterLabelBorder: dark ? '#718096' : '#cbd5e0',
+    };
+  }
+
   /* ---------- 初始化 ---------- */
 
   async function init(el, callbacks) {
@@ -125,19 +146,28 @@ const MapModule = (() => {
     if (popup) popup.classList.add('hidden');
   }
 
+  async function ensureProvinceIndex() {
+    if (Object.keys(provinceIndex).length > 0) return; // 已加载
+
+    const resp = await fetch('maps/china.json');
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const geojson = await resp.json();
+    geojson.features.forEach((f) => {
+      provinceIndex[f.properties.name] = {
+        adcode: f.properties.adcode,
+        center: f.properties.center,
+      };
+    });
+  }
+
   async function loadChina() {
-    chart.showLoading({ text: '地图加载中…', color: '#2b6cb0' });
+    chart.showLoading({ text: '地图加载中…', color: chartColors().visualMapText });
     try {
+      await ensureProvinceIndex();
+      // 注册 ECharts 地图（需要 china.json 的 GeoJSON，复用已加载的数据）
       const resp = await fetch('maps/china.json');
-      if (!resp.ok) throw new Error('HTTP ' + resp.status);
       const geojson = await resp.json();
       echarts.registerMap('china', geojson);
-      geojson.features.forEach((f) => {
-        provinceIndex[f.properties.name] = {
-          adcode: f.properties.adcode,
-          center: f.properties.center,
-        };
-      });
       renderChina();
     } catch (e) {
       console.error(e);
@@ -160,6 +190,7 @@ const MapModule = (() => {
   function renderChina() {
     currentProvince = null;
     hidePopup();
+    const c = chartColors();
     const counts = countByProvince();
     const data = Object.keys(provinceIndex).map((name) => ({
       name,
@@ -181,7 +212,7 @@ const MapModule = (() => {
           text: ['多', '少'],
           calculable: true,
           inRange: { color: ['#dcebf7', '#7db3dd', '#2b6cb0', '#123f6d'] },
-          textStyle: { color: '#4a5568' },
+          textStyle: { color: c.visualMapText },
         },
         series: [
           {
@@ -189,11 +220,11 @@ const MapModule = (() => {
             map: 'china',
             roam: true,
             scaleLimit: { min: 0.8, max: 5 },
-            label: { show: true, fontSize: 10, color: '#4a5568' },
-            itemStyle: { borderColor: '#ffffff', borderWidth: 0.6 },
+            label: { show: true, fontSize: 10, color: c.labelColor },
+            itemStyle: { borderColor: c.mapBorder, borderWidth: 0.6 },
             emphasis: {
-              label: { color: '#1a202c', fontWeight: 'bold' },
-              itemStyle: { areaColor: '#f6ad55' },
+              label: { color: c.emphasisLabel, fontWeight: 'bold' },
+              itemStyle: { areaColor: c.emphasisArea },
             },
             data,
           },
@@ -239,7 +270,7 @@ const MapModule = (() => {
 
   async function drillDown(provinceName) {
     if (!provinceIndex[provinceName]) return;
-    chart.showLoading({ text: provinceName + '地图加载中…', color: '#2b6cb0' });
+    chart.showLoading({ text: provinceName + '地图加载中…', color: chartColors().visualMapText });
     try {
       const geojson = await ensureProvinceGeo(provinceName);
       echarts.registerMap(provinceName, geojson);
@@ -259,6 +290,7 @@ const MapModule = (() => {
     const provinceName = currentProvince;
     if (!provinceName) return;
 
+    const c = chartColors();
     const info = provinceIndex[provinceName];
     const provinceCenter = info ? info.center : null;
     const cities = cityListCache[provinceName] || [];
@@ -289,15 +321,15 @@ const MapModule = (() => {
           map: provinceName,
           roam: true,
           scaleLimit: { min: 0.8, max: 8 },
-          label: { show: true, fontSize: 10, color: '#4a5568' },
+          label: { show: true, fontSize: 10, color: c.labelColor },
           itemStyle: {
-            areaColor: '#e3eef8',
-            borderColor: '#7db3dd',
+            areaColor: c.geoArea,
+            borderColor: c.geoBorder,
             borderWidth: 0.8,
           },
           emphasis: {
-            label: { color: '#1a202c' },
-            itemStyle: { areaColor: '#cfe3f4' },
+            label: { color: c.emphasisLabel },
+            itemStyle: { areaColor: c.geoEmphasisArea },
           },
         },
         series: [
@@ -307,16 +339,16 @@ const MapModule = (() => {
             symbol: 'pin',
             symbolSize: 42,
             symbolKeepAspect: true,
-            itemStyle: { color: '#e53e3e', shadowBlur: 6, shadowColor: 'rgba(0,0,0,0.3)' },
+            itemStyle: { color: c.pinColor, shadowBlur: 6, shadowColor: c.pinShadow },
             label: {
               show: true,
               position: 'top',
               distance: 4,
               fontSize: 12,
               fontWeight: 600,
-              color: '#2d3748',
-              backgroundColor: 'rgba(255,255,255,0.88)',
-              borderColor: '#cbd5e0',
+              color: c.scatterLabelColor,
+              backgroundColor: c.scatterLabelBg,
+              borderColor: c.scatterLabelBorder,
               borderWidth: 1,
               borderRadius: 4,
               padding: [2, 6],
@@ -355,6 +387,7 @@ const MapModule = (() => {
 
   /** 数据变化后刷新当前视图 */
   function refresh() {
+    if (!chart) return; // 尚未初始化,无需刷新
     if (currentProvince) {
       renderProvince();
     } else {
@@ -380,5 +413,9 @@ const MapModule = (() => {
     }[c]));
   }
 
-  return { init, backToChina, refresh, drillDown, getCities, getCurrentProvince, getProvinceNames, _showPopup: showCityPopup, _hidePopup: hidePopup, _scheduleHide: scheduleHidePopup };
+  function _getProvinceInfo(name) {
+    return provinceIndex[name] || null;
+  }
+
+  return { init, backToChina, refresh, drillDown, getCities, getCurrentProvince, getProvinceNames, ensureProvinceIndex, _getProvinceInfo, _showPopup: showCityPopup, _hidePopup: hidePopup, _scheduleHide: scheduleHidePopup };
 })();

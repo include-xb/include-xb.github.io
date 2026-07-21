@@ -1,0 +1,188 @@
+/* ===== 统计页面专属样式 ===== */
+
+.stats-main {
+  flex: 1;
+  padding: 20px 24px;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+/* ---------- 总览卡片 ---------- */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+  max-width: 700px;
+}
+
+.summary-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 12px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
+.summary-card .sc-num {
+  display: block;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.2;
+}
+
+.summary-card .sc-label {
+  display: block;
+  font-size: 13px;
+  color: var(--text-light);
+  margin-top: 4px;
+}
+
+/* ---------- 排行板块 ---------- */
+.stats-section {
+  margin-bottom: 28px;
+  max-width: 780px;
+}
+
+.stats-section-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.stats-chart {
+  list-style: none;
+}
+
+.stats-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.stats-row:hover {
+  background: var(--hover-bg);
+}
+
+.stats-rank {
+  flex: 0 0 auto;
+  width: 24px;
+  text-align: right;
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+.stats-name {
+  flex: 0 0 auto;
+  width: 140px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text);
+}
+
+.stats-bar-wrap {
+  flex: 1;
+  min-width: 50px;
+  height: 16px;
+  background: var(--sidebar-bar-bg);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.stats-bar-fill {
+  display: inline-block;
+  height: 100%;
+  border-radius: 8px;
+  background: var(--sidebar-bar-fill);
+  transition: width 0.5s ease, background 0.2s;
+}
+
+.stats-row:hover .stats-bar-fill {
+  background: var(--sidebar-bar-hover);
+}
+
+.stats-count {
+  flex: 0 0 auto;
+  width: 48px;
+  text-align: right;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-dark);
+  white-space: nowrap;
+}
+
+/* ---------- 名单弹窗 ---------- */
+.group-modal-body {
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.group-student {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--border);
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.group-student:last-child {
+  border-bottom: none;
+}
+
+.group-student:hover {
+  color: var(--primary);
+}
+
+.group-student-name {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.group-student-sub {
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 640px) {
+  .stats-main {
+    padding: 12px 10px;
+  }
+
+  .summary-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .summary-card {
+    padding: 12px 8px;
+  }
+
+  .summary-card .sc-num {
+    font-size: 22px;
+  }
+
+  .stats-name {
+    width: 80px;
+    font-size: 13px;
+  }
+
+  .stats-count {
+    width: 38px;
+    font-size: 12px;
+  }
+}

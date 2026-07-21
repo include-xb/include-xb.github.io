@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>高中毕业去向统计图</title>
+  <title>🎓 昆山震川高级中学高三(9)班 高中同学毕业去向统计图</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header class="header">
     <div class="header-left">
-      <h1>🎓 高中毕业去向统计图</h1>
+      <h1>🎓 昆山震川高级中学高三(9)班 高中同学毕业去向统计图</h1>
       <span id="totalCount" class="total-count"></span>
     </div>
     <div class="header-right">
@@ -17,6 +17,7 @@
         <input type="text" id="searchInput" placeholder="搜索姓名 / 大学 / 专业…" autocomplete="off">
         <div id="searchResults" class="search-results hidden"></div>
       </div>
+      <button id="themeToggle" class="btn" title="切换深色/浅色主题">🌙 深色</button>
       <button id="addBtn" class="btn btn-primary">＋ 添加同学</button>
     </div>
   </header>
@@ -29,6 +30,12 @@
     <div id="map"></div>
     <div id="cityPopup" class="city-popup hidden"></div>
     <div id="mapHint" class="map-hint">点击省份查看详情 · 滚轮缩放 · 拖拽平移</div>
+
+    <!-- 侧边工具栏入口 -->
+    <nav class="sidebar-nav">
+      <a class="sidebar-entry-btn" href="distance.html" title="查看距昆山距离">📍 昆山距离</a>
+      <a class="sidebar-entry-btn" href="stats.html" title="查看统计概览">📊 统计概览</a>
+    </nav>
   </main>
 
   <!-- 同学详情弹窗 -->
@@ -116,7 +123,7 @@
         <button class="modal-close" data-close="exportModal">×</button>
       </div>
       <div class="modal-body">
-        <p class="export-hint">将下方 JSON 复制发送给小白，由小白添加到 data.json：</p>
+        <p class="export-hint">由于小白没钱租用服务器, 所以只能搭建静态网页. </br> 故数据库操作只能人力进行. </br> 将下方 JSON 复制发送给小白，由小白手动添加到数据库：</p>
         <textarea id="exportJson" class="export-textarea" readonly rows="8"></textarea>
         <div class="form-actions">
           <button type="button" class="btn" data-close="exportModal">关闭</button>

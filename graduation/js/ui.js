@@ -10,10 +10,40 @@ const UI = (() => {
   /* ---------- 初始化 ---------- */
 
   function init() {
+    initTheme();
     bindModals();
     bindSearch();
     bindAddForm();
     $('#backBtn').addEventListener('click', () => MapModule.backToChina());
+  }
+
+  /* ---------- 深色/浅色主题 ---------- */
+
+  function initTheme() {
+    const saved = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = saved ? saved === 'dark' : prefersDark;
+    applyTheme(isDark);
+
+    $('#themeToggle').addEventListener('click', () => {
+      const current = document.documentElement.dataset.theme;
+      applyTheme(current !== 'dark');
+    });
+
+    // 监听系统主题变化（当用户未手动设置时跟随系统）
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (!localStorage.getItem('theme')) {
+        applyTheme(e.matches);
+      }
+    });
+  }
+
+  function applyTheme(isDark) {
+    document.documentElement.dataset.theme = isDark ? 'dark' : 'light';
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    $('#themeToggle').textContent = isDark ? '☀️ 浅色' : '🌙 深色';
+    // ECharts 颜色在 render 时读取 data-theme，触发重绘
+    if (MapModule.refresh) MapModule.refresh();
   }
 
   /* ---------- Toast ---------- */

@@ -1,0 +1,148 @@
+/* ===== 距离页面专属样式 ===== */
+
+.distance-main {
+  flex: 1;
+  padding: 20px 24px 20px 16px;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.distance-loading,
+.distance-empty {
+  text-align: center;
+  padding: 48px 14px;
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+/* ---------- 图表列表 ---------- */
+.distance-chart {
+  list-style: none;
+  max-width: 900px;
+}
+
+.distance-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.distance-row:hover {
+  background: var(--hover-bg);
+}
+
+/* 排名序号 */
+.distance-rank {
+  flex: 0 0 auto;
+  width: 28px;
+  text-align: right;
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+/* 姓名 */
+.distance-name {
+  flex: 0 0 auto;
+  width: 64px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text);
+}
+
+/* 学校(小字) */
+.distance-uni {
+  flex: 0 0 auto;
+  width: 120px;
+  font-size: 12px;
+  color: var(--text-light);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 城市 */
+.distance-city {
+  flex: 0 0 auto;
+  width: 80px;
+  font-size: 12px;
+  color: var(--text-light);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 柱形容器 */
+.distance-bar-wrap {
+  flex: 1;
+  min-width: 60px;
+  height: 16px;
+  background: var(--sidebar-bar-bg);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* 柱形填充 */
+.distance-bar-fill {
+  display: inline-block;
+  height: 100%;
+  border-radius: 8px;
+  background: var(--sidebar-bar-fill);
+  transition: width 0.5s ease, background 0.2s;
+}
+
+.distance-row:hover .distance-bar-fill {
+  background: var(--sidebar-bar-hover);
+}
+
+/* 公里数 */
+.distance-km {
+  flex: 0 0 auto;
+  width: 52px;
+  text-align: right;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--sidebar-km-color);
+  white-space: nowrap;
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 640px) {
+  .distance-main {
+    padding: 12px 10px 12px 6px;
+  }
+
+  .distance-uni {
+    display: none;
+  }
+
+  .distance-city {
+    display: none;
+  }
+
+  .distance-row {
+    gap: 6px;
+    padding: 6px 8px;
+  }
+
+  .distance-name {
+    width: 52px;
+    font-size: 13px;
+  }
+
+  .distance-rank {
+    width: 20px;
+    font-size: 11px;
+  }
+
+  .distance-km {
+    width: 44px;
+    font-size: 11px;
+  }
+}

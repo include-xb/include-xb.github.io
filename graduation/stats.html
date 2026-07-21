@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📊 统计概览 — 蹭饭图</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/stats.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-left">
+      <a href="index.html" class="btn">← 返回地图</a>
+      <h1>📊 统计概览</h1>
+      <span id="totalCount" class="total-count"></span>
+    </div>
+    <div class="header-right">
+      <button id="themeToggle" class="btn" title="切换深色/浅色主题">🌙 深色</button>
+      <button id="sortBtn" class="btn" title="切换排序"><span id="sortIcon">↓</span> 排序</button>
+    </div>
+  </header>
+
+  <main class="stats-main">
+    <!-- 总览卡片 -->
+    <div class="summary-cards">
+      <div class="summary-card">
+        <span class="sc-num" id="scTotal">0</span>
+        <span class="sc-label">同学总人数</span>
+      </div>
+      <div class="summary-card">
+        <span class="sc-num" id="scProvinces">0</span>
+        <span class="sc-label">覆盖省份</span>
+      </div>
+      <div class="summary-card">
+        <span class="sc-num" id="scCities">0</span>
+        <span class="sc-label">覆盖城市</span>
+      </div>
+      <div class="summary-card">
+        <span class="sc-num" id="scUnis">0</span>
+        <span class="sc-label">覆盖大学</span>
+      </div>
+    </div>
+
+    <!-- 省份排行 -->
+    <div class="stats-section">
+      <div class="stats-section-title">🏙️ 省份分布</div>
+      <ul id="provinceChart" class="stats-chart"></ul>
+    </div>
+
+    <!-- 大学排行 -->
+    <div class="stats-section">
+      <div class="stats-section-title">🎓 大学分布</div>
+      <ul id="uniChart" class="stats-chart"></ul>
+    </div>
+  </main>
+
+  <!-- 名单弹窗 -->
+  <div id="groupModal" class="modal-mask hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="groupTitle"></h2>
+        <button class="modal-close" data-close="groupModal">×</button>
+      </div>
+      <div class="modal-body group-modal-body">
+        <div id="groupStudentList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 同学详情弹窗 -->
+  <div id="detailModal" class="modal-mask hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>同学资料</h2>
+        <button class="modal-close" data-close="detailModal">×</button>
+      </div>
+      <div class="modal-body">
+        <dl class="detail-list">
+          <div class="detail-item"><dt>姓名</dt><dd id="dName"></dd></div>
+          <div class="detail-item"><dt>录取大学</dt><dd id="dUniversity"></dd></div>
+          <div class="detail-item"><dt>录取专业</dt><dd id="dMajor"></dd></div>
+          <div class="detail-item"><dt>省市</dt><dd id="dRegion"></dd></div>
+          <div class="detail-item"><dt>微信号</dt><dd id="dWechat"></dd></div>
+          <div class="detail-item"><dt>QQ号</dt><dd id="dQq"></dd></div>
+          <div class="detail-item"><dt>电话号码</dt><dd id="dPhone"></dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/stats.js"></script>
+</body>
+</html>

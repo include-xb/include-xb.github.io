@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📍 距昆山距离 — 蹭饭图</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/distance.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-left">
+      <a href="index.html" class="btn">← 返回地图</a>
+      <h1>📍 距昆山距离</h1>
+      <span id="totalCount" class="total-count"></span>
+    </div>
+    <div class="header-right">
+      <button id="themeToggle" class="btn" title="切换深色/浅色主题">🌙 深色</button>
+      <button id="sortBtn" class="btn" title="切换排序"><span id="sortIcon">↓</span> 排序</button>
+    </div>
+  </header>
+
+  <main class="distance-main">
+    <div id="loadingEl" class="distance-loading">加载坐标中…</div>
+    <div id="emptyEl" class="distance-empty hidden">暂无同学数据</div>
+    <ul id="chartList" class="distance-chart"></ul>
+  </main>
+
+  <!-- 同学详情弹窗 -->
+  <div id="detailModal" class="modal-mask hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>同学资料</h2>
+        <button class="modal-close" data-close="detailModal">×</button>
+      </div>
+      <div class="modal-body">
+        <dl class="detail-list">
+          <div class="detail-item"><dt>姓名</dt><dd id="dName"></dd></div>
+          <div class="detail-item"><dt>录取大学</dt><dd id="dUniversity"></dd></div>
+          <div class="detail-item"><dt>录取专业</dt><dd id="dMajor"></dd></div>
+          <div class="detail-item"><dt>省市</dt><dd id="dRegion"></dd></div>
+          <div class="detail-item"><dt>微信号</dt><dd id="dWechat"></dd></div>
+          <div class="detail-item"><dt>QQ号</dt><dd id="dQq"></dd></div>
+          <div class="detail-item"><dt>电话号码</dt><dd id="dPhone"></dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/distance.js"></script>
+</body>
+</html>
