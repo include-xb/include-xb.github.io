@@ -148,29 +148,6 @@ const DistancePage = (() => {
     document.getElementById('detailModal').classList.remove('hidden');
   }
 
-  /* ---------- 主题 ---------- */
-
-  function initTheme() {
-    const saved = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    applyTheme(saved ? saved === 'dark' : true);
-
-    document.getElementById('themeToggle').addEventListener('click', () => {
-      const current = document.documentElement.dataset.theme;
-      applyTheme(current !== 'dark');
-    });
-
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-      if (!localStorage.getItem('theme')) applyTheme(true);
-    });
-  }
-
-  function applyTheme(isDark) {
-    document.documentElement.dataset.theme = isDark ? 'dark' : 'light';
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    document.getElementById('themeToggle').textContent = isDark ? '☀️ 浅色' : '🌙 深色';
-  }
-
   /* ---------- 工具 ---------- */
 
   function esc(str) {
@@ -182,8 +159,6 @@ const DistancePage = (() => {
   /* ---------- 入口 ---------- */
 
   async function init() {
-    initTheme();
-
     // 弹窗事件
     document.querySelectorAll('[data-close]').forEach((btn) => {
       btn.addEventListener('click', () =>

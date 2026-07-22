@@ -10,40 +10,10 @@ const UI = (() => {
   /* ---------- 初始化 ---------- */
 
   function init() {
-    initTheme();
     bindModals();
     bindSearch();
     bindAddForm();
     $('#backBtn').addEventListener('click', () => MapModule.backToChina());
-  }
-
-  /* ---------- 深色/浅色主题 ---------- */
-
-  function initTheme() {
-    const saved = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const isDark = saved ? saved === 'dark' : true;
-    applyTheme(isDark);
-
-    $('#themeToggle').addEventListener('click', () => {
-      const current = document.documentElement.dataset.theme;
-      applyTheme(current !== 'dark');
-    });
-
-    // 监听系统主题变化（当用户未手动设置时跟随系统）
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-      if (!localStorage.getItem('theme')) {
-        applyTheme(true);
-      }
-    });
-  }
-
-  function applyTheme(isDark) {
-    document.documentElement.dataset.theme = isDark ? 'dark' : 'light';
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    $('#themeToggle').textContent = isDark ? '☀️ 浅色' : '🌙 深色';
-    // ECharts 颜色在 render 时读取 data-theme，触发重绘
-    if (MapModule.refresh) MapModule.refresh();
   }
 
   /* ---------- Toast ---------- */
@@ -86,6 +56,10 @@ const UI = (() => {
     $('#mapHint').textContent = provinceName
       ? '悬停大头针查看同市同学 · 点击姓名查看资料'
       : '点击省份查看详情 · 滚轮缩放 · 拖拽平移';
+
+    // 教师面板仅在全国视图显示
+    var panel = document.getElementById('teacherPanel');
+    if (panel) panel.classList.toggle('hidden', !!provinceName);
   }
 
   function updateTotalCount() {

@@ -33,26 +33,24 @@ const MapModule = (() => {
   /* ---------- ECharts 主题颜色 ---------- */
 
   function chartColors() {
-    const dark = document.documentElement.dataset.theme === 'dark';
     return {
-      visualMapText:     dark ? '#a0aec0' : '#4a5568',
-      labelColor:        dark ? '#a0aec0' : '#4a5568',
-      emphasisLabel:     dark ? '#e2e8f0' : '#1a202c',
-      emphasisArea:      dark ? '#dd6b20' : '#f6ad55',
-      mapBorder:         dark ? '#2d3748' : '#ffffff',
-      geoArea:           dark ? '#2a3f52' : '#e3eef8',
-      geoBorder:         dark ? '#4a6a8a' : '#7db3dd',
-      geoEmphasisArea:   dark ? '#3a5570' : '#cfe3f4',
-      pinColor:          dark ? '#fc8181' : '#e53e3e',
-      pinShadow:         dark ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.3)',
-      scatterLabelColor: dark ? '#e2e8f0' : '#2d3748',
-      scatterLabelBg:    dark ? 'rgba(45,55,72,0.92)' : 'rgba(255,255,255,0.88)',
-      scatterLabelBorder: dark ? '#718096' : '#cbd5e0',
-      // 光点 & 飞线（青绿色系：轨迹比粒子略淡）
-      spotColor:         dark ? '#2dd4bf' : '#0d9488',
-      spotGlow:          dark ? 'rgba(45,212,191,0.55)' : 'rgba(13,148,136,0.5)',
-      flightLine:        dark ? '#5ee4d4' : '#0d9488',
-      flightEffect:      dark ? '#2dd4bf' : '#0ea5a5',
+      visualMapText:     '#a0aec0',
+      labelColor:        '#a0aec0',
+      emphasisLabel:     '#e2e8f0',
+      emphasisArea:      '#dd6b20',
+      mapBorder:         '#2d3748',
+      geoArea:           '#2a3f52',
+      geoBorder:         '#4a6a8a',
+      geoEmphasisArea:   '#3a5570',
+      pinColor:          '#fc8181',
+      pinShadow:         'rgba(0,0,0,0.5)',
+      scatterLabelColor: '#e2e8f0',
+      scatterLabelBg:    'rgba(45,55,72,0.92)',
+      scatterLabelBorder: '#718096',
+      spotColor:         '#2dd4bf',
+      spotGlow:          'rgba(45,212,191,0.55)',
+      flightLine:        '#5ee4d4',
+      flightEffect:      '#2dd4bf',
     };
   }
 

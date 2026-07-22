@@ -4,6 +4,7 @@
 (async () => {
   UI.init();
   await DataStore.load();
+  TeacherPanel.init();
   UI.updateTotalCount();
   await MapModule.init(document.getElementById('map'), {
     onShowStudent: (student) => UI.showDetail(student),
