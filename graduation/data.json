@@ -352,5 +352,14 @@
       "qq": "2181873151",
       "phone": ""
     }
+  ],
+  "teachers": [
+    { "role": "班主任", "name": "袁红英", "qq": "", "phone": "" },
+    { "role": "语文", "name": "王旭文", "qq": "", "phone": "" },
+    { "role": "数学", "name": "姚进", "qq": "", "phone": "" },
+    { "role": "英语", "name": "李稚敏", "qq": "", "phone": "" },
+    { "role": "物理", "name": "冯菊明", "qq": "", "phone": "" },
+    { "role": "化学", "name": "尚婧睿", "qq": "", "phone": "" },
+    { "role": "生物", "name": "袁红英", "qq": "", "phone": "" }
   ]
 }
